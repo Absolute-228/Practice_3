@@ -72,7 +72,7 @@ namespace Practice_3
                 db.Open();
 
                 string sql = @"
-        INSERT INTO StudyPlans 
+        INSERT INTO Practice_3 
         (Year, GroupName, SubjectName, TeacherName, TotalHours,
          LectureHours, PracticeHours, LabHours, ExamType,
          Semester, Credits, Department)
