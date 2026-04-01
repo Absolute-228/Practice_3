@@ -12,9 +12,9 @@ using System.Windows.Forms;
 
 namespace Practice_3
 {
-    public partial class Form1 : Form
+    public partial class StudyApp : Form
     {
-        public Form1()
+        public StudyApp()
         {
             InitializeComponent();
         }
@@ -196,6 +196,35 @@ namespace Practice_3
 
         }
 
+
+        private void HighlightDifferences(List<StudyPlan> list1, List<StudyPlan> list2)
+        {
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                if (row.Cells["SubjectName"].Value == null) continue;
+
+                string subject = row.Cells["SubjectName"].Value.ToString();
+                string group = row.Cells["GroupName"].Value.ToString();
+
+                var oldItem = list1.FirstOrDefault(x => x.SubjectName == subject && x.GroupName == group);
+                var newItem = list2.FirstOrDefault(x => x.SubjectName == subject && x.GroupName == group);
+
+                if (oldItem == null)
+                {
+                    row.DefaultCellStyle.BackColor = Color.LightGreen; // добавлено
+                }
+                else if (newItem == null)
+                {
+                    row.DefaultCellStyle.BackColor = Color.LightCoral; // удалено
+                }
+                else if (oldItem.TotalHours != newItem.TotalHours)
+                {
+                    row.DefaultCellStyle.BackColor = Color.Yellow; // изменено
+                }
+            }
+        }
+
+
         private void btnCompare_Click(object sender, EventArgs e)
         {
             var year1 = cbYear1.Text;
@@ -204,39 +233,10 @@ namespace Practice_3
             var list1 = GetPlansByYear(year1);
             var list2 = GetPlansByYear(year2);
 
-            List<string> differences = new List<string>();
+            // Показываем новый план
+            dataGridView1.DataSource = list2;
 
-            foreach (var oldItem in list1)
-            {
-                var newItem = list2.FirstOrDefault(x =>
-                    x.SubjectName == oldItem.SubjectName &&
-                    x.GroupName == oldItem.GroupName);
-
-                if (newItem == null)
-                {
-                    differences.Add($"❌ Убрана: {oldItem.SubjectName}");
-                    continue;
-                }
-
-                if (oldItem.TotalHours != newItem.TotalHours)
-                {
-                    differences.Add($"⚠ {oldItem.SubjectName}: {oldItem.TotalHours} → {newItem.TotalHours}");
-                }
-            }
-
-            foreach (var newItem in list2)
-            {
-                var oldItem = list1.FirstOrDefault(x =>
-                    x.SubjectName == newItem.SubjectName &&
-                    x.GroupName == newItem.GroupName);
-
-                if (oldItem == null)
-                {
-                    differences.Add($"🆕 Добавлена: {newItem.SubjectName}");
-                }
-            }
-
-            MessageBox.Show(string.Join("\n", differences));
+            HighlightDifferences(list1, list2);
         }
 
         public List<StudyPlan> GetPlansByYear(string year)
@@ -270,6 +270,58 @@ namespace Practice_3
             }
 
             return list;
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.CurrentRow == null) return;
+
+            int id = Convert.ToInt32(dataGridView1.CurrentRow.Cells["Id"].Value);
+
+            string connectionString = "Data Source=practice_3.db;";
+
+            using (var db = new SQLiteConnection(connectionString))
+            {
+                db.Open();
+
+                var cmd = new SQLiteCommand("DELETE FROM Practice_3 WHERE Id = @Id", db);
+                cmd.Parameters.AddWithValue("@Id", id);
+                cmd.ExecuteNonQuery();
+            }
+
+            MessageBox.Show("Удалено");
+            btnLoad_Click(null, null);
+        }
+
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.CurrentRow == null) return;
+
+            int id = Convert.ToInt32(dataGridView1.CurrentRow.Cells["Id"].Value);
+
+            string connectionString = "Data Source=practice_3.db;";
+
+            using (var db = new SQLiteConnection(connectionString))
+            {
+                db.Open();
+
+                string sql = @"
+        UPDATE Practice_3 SET
+            SubjectName = @Subject,
+            TotalHours = @Hours
+        WHERE Id = @Id";
+
+                var cmd = new SQLiteCommand(sql, db);
+
+                cmd.Parameters.AddWithValue("@Subject", textSubjectName.Text);
+                cmd.Parameters.AddWithValue("@Hours", int.Parse(textTotalHours.Text));
+                cmd.Parameters.AddWithValue("@Id", id);
+
+                cmd.ExecuteNonQuery();
+            }
+
+            MessageBox.Show("Обновлено");
+            btnLoad_Click(null, null);
         }
     }
 }

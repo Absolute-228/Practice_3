@@ -1,6 +1,6 @@
 ﻿namespace Practice_3
 {
-    partial class Form1
+    partial class StudyApp
     {
         /// <summary>
         /// Обязательная переменная конструктора.
@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
             this.textGroupName = new System.Windows.Forms.TextBox();
             this.textSubjectName = new System.Windows.Forms.TextBox();
             this.textTeacherName = new System.Windows.Forms.TextBox();
@@ -65,18 +64,10 @@
             this.label14 = new System.Windows.Forms.Label();
             this.btnFilter = new System.Windows.Forms.Button();
             this.btnCompare = new System.Windows.Forms.Button();
+            this.btnDelete = new System.Windows.Forms.Button();
+            this.btnUpdate = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(1184, 664);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 28);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // textGroupName
             // 
@@ -380,11 +371,33 @@
             this.btnCompare.UseVisualStyleBackColor = true;
             this.btnCompare.Click += new System.EventHandler(this.btnCompare_Click);
             // 
+            // btnDelete
+            // 
+            this.btnDelete.Location = new System.Drawing.Point(902, 599);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(120, 45);
+            this.btnDelete.TabIndex = 37;
+            this.btnDelete.Text = "Удалить";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
+            // btnUpdate
+            // 
+            this.btnUpdate.Location = new System.Drawing.Point(1072, 600);
+            this.btnUpdate.Name = "btnUpdate";
+            this.btnUpdate.Size = new System.Drawing.Size(122, 42);
+            this.btnUpdate.TabIndex = 38;
+            this.btnUpdate.Text = "Обновить";
+            this.btnUpdate.UseVisualStyleBackColor = true;
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1680, 818);
+            this.Controls.Add(this.btnUpdate);
+            this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnCompare);
             this.Controls.Add(this.btnFilter);
             this.Controls.Add(this.label14);
@@ -421,7 +434,6 @@
             this.Controls.Add(this.textTeacherName);
             this.Controls.Add(this.textSubjectName);
             this.Controls.Add(this.textGroupName);
-            this.Controls.Add(this.button1);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -432,8 +444,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox textGroupName;
         private System.Windows.Forms.TextBox textSubjectName;
         private System.Windows.Forms.TextBox textTeacherName;
@@ -470,6 +480,8 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Button btnFilter;
         private System.Windows.Forms.Button btnCompare;
+        private System.Windows.Forms.Button btnDelete;
+        private System.Windows.Forms.Button btnUpdate;
     }
 }
 
